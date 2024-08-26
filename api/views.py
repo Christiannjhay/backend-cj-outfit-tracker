@@ -37,7 +37,17 @@ class OutfitListCreateView(generics.ListCreateAPIView):
 class OutfitDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Outfit.objects.all()
     serializer_class = OutfitSerializer
-    
+
+class UserSessionCheckView(APIView):
+    def get(self, request, *args, **kwargs):
+       
+        if request.user.is_authenticated:
+           
+            return Response({'message': 'User is authenticated', 'username': request.user.username}, status=status.HTTP_200_OK)
+        else:
+           
+            return Response({'message': 'User is not authenticated'}, status=status.HTTP_401_UNAUTHORIZED)
+            
 class UserLoginView(APIView):
     def post(self, request, *args, **kwargs):
         username = request.data.get('username')
